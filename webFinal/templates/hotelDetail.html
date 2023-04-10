@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Room&Hi</title>
+  <!-- Bootstrap cdn 설정 -->
+  <link rel="icon" href="../static/img/popicon5.png"  sizes="256x256"  type="image/png">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+ <style>
+
+  .body{
+    background: white;
+    height: 500px; 
+    width: 500px;
+    border-radius: 30px;
+
+  }
+
+  #container1 {
+  width:100%;
+  }
+
+#left{
+background-color:red;
+float:left;
+width:50%;
+height:500px
+}
+#right{
+  background-color:blue;
+  float:left;
+  width:50%
+  height:500px
+}
+  
+  .black{
+    background-color:white;
+    width: 100%;
+    height:150px;
+    border-radius: 50px;
+  
+
+    
+  }     
+
+
+      .sub-tabs li {
+        float: none; 
+        display: inline-block;
+        margin-right: 10px;
+      }
+      
+      .sub-tabs li a {
+        padding: 10px;  
+        background-color: #fff;
+        color: black; /* 텍스트 색상 설정 */
+        border:none;
+      }
+      
+      .sub-tabs li.active a {
+        background-color: #fff;
+        color: blue; 
+       
+      }
+
+      .sub-tabs-content {
+        clear: both;
+        border: 1px solid #ccc;
+        padding: 10px;
+        background-color: gray;
+
+        
+      }
+      .rounded{
+        background: #EBC7E6;
+        height: 50px; width:200px;
+        border-radius: 15px;
+      }
+
+      .img_wrap {
+            scroll-snap-type: x mandatory;
+            margin: 0 auto;
+            padding: 30px 0;
+            max-width: 1000px;
+            height: 300px;
+            white-space: nowrap;
+            overflow-x: scroll;
+        overflow-y:hidden;
+         }
+
+         .img_item{
+            scroll-snap-align: center;
+            display: inline-block;
+            margin: 0 20px;
+            width: 40%;
+            white-space: normal;
+            background-color: #f4f4f4;
+            overflow: hidden;
+
+         }
+
+         .img_item_test{
+            display: block;
+            width: 90%;
+            height: 230px;
+         }
+
+      a{
+        color:black;
+      }
+
+/* START TOOLTIP STYLES */
+[tooltip] {
+    position: relative; /* opinion 1 */
+  }
+  
+  /* Applies to all tooltips */
+  [tooltip]::before,
+  [tooltip]::after {
+    text-transform: none; /* opinion 2 */
+    font-size: .9em; /* opinion 3 */
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+    position: absolute;
+    display: none;
+    opacity: 0;
+  }
+  [tooltip]::before {
+    content: '';
+    border: 5px solid transparent; /* opinion 4 */
+    z-index: 1001; /* absurdity 1 */
+  }
+  [tooltip]::after {
+    content: attr(tooltip); /* magic! */
+    
+    /* most of the rest of this is opinion */
+    font-family: Helvetica, sans-serif;
+    text-align: center;
+    
+    /* 
+      Let the content set the size of the tooltips 
+      but this will also keep them from being obnoxious
+      */
+    min-width: 3em;
+    max-width: 21em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 1ch 1.5ch;
+    border-radius: .3ch;
+    box-shadow: 0 1em 2em -.5em rgba(0, 0, 0, 0.35);
+    background: #333;
+    color: #fff;
+    z-index: 1000; /* absurdity 2 */
+  }
+  
+  /* Make the tooltips respond to hover */
+  [tooltip]:hover::before,
+  [tooltip]:hover::after {
+    display: block;
+  }
+  
+  /* don't show empty tooltips */
+  [tooltip='']::before,
+  [tooltip='']::after {
+    display: none !important;
+  }
+  
+  /* FLOW: UP */
+  [tooltip]:not([flow])::before,
+  [tooltip][flow^="up"]::before {
+    bottom: 100%;
+    border-bottom-width: 0;
+    border-top-color: #333;
+  }
+  [tooltip]:not([flow])::after,
+  [tooltip][flow^="up"]::after {
+    bottom: calc(100% + 5px);
+  }
+  [tooltip]:not([flow])::before,
+  [tooltip]:not([flow])::after,
+  [tooltip][flow^="up"]::before,
+  [tooltip][flow^="up"]::after {
+    left: 50%;
+    transform: translate(-50%, -.5em);
+  }
+  
+  /* FLOW: DOWN */
+  [tooltip][flow^="down"]::before {
+    top: 100%;
+    border-top-width: 0;
+    border-bottom-color: #333;
+  }
+  [tooltip][flow^="down"]::after {
+    top: calc(100% + 5px);
+  }
+  [tooltip][flow^="down"]::before,
+  [tooltip][flow^="down"]::after {
+    left: 50%;
+    transform: translate(-50%, .5em);
+  }
+  
+  /* FLOW: LEFT */
+  [tooltip][flow^="left"]::before {
+    top: 50%;
+    border-right-width: 0;
+    border-left-color: #333;
+    left: calc(0em - 5px);
+    transform: translate(-.5em, -50%);
+  }
+  [tooltip][flow^="left"]::after {
+    top: 50%;
+    right: calc(100% + 5px);
+    transform: translate(-.5em, -50%);
+  }
+  
+  /* FLOW: RIGHT */
+  [tooltip][flow^="right"]::before {
+    top: 50%;
+    border-left-width: 0;
+    border-right-color: #333;
+    right: calc(0em - 5px);
+    transform: translate(.5em, -50%);
+  }
+  [tooltip][flow^="right"]::after {
+    top: 50%;
+    left: calc(100% + 5px);
+    transform: translate(.5em, -50%);
+  }
+  
+  /* KEYFRAMES */
+  @keyframes tooltips-vert {
+    to {
+      opacity: .9;
+      transform: translate(-50%, 0);
+    }
+  }
+  
+  @keyframes tooltips-horz {
+    to {
+      opacity: .9;
+      transform: translate(0, -50%);
+    }
+  }
+  
+  /* FX All The Things */ 
+  [tooltip]:not([flow]):hover::before,
+  [tooltip]:not([flow]):hover::after,
+  [tooltip][flow^="up"]:hover::before,
+  [tooltip][flow^="up"]:hover::after,
+  [tooltip][flow^="down"]:hover::before,
+  [tooltip][flow^="down"]:hover::after {
+    animation: tooltips-vert 300ms ease-out forwards;
+  }
+  
+  [tooltip][flow^="left"]:hover::before,
+  [tooltip][flow^="left"]:hover::after,
+  [tooltip][flow^="right"]:hover::before,
+  [tooltip][flow^="right"]:hover::after {
+    animation: tooltips-horz 300ms ease-out forwards;
+  }
+
+
+  .tab-pane {
+    background-color: white;
+  }
+  .nav-tabs .active > a, 
+  .nav-tabs .active > a:focus, 
+  .nav-tabs .active > a:hover {
+    background-color:#ffffff !important;
+    border: 2px solid #ffffff !important;
+    color: #655DBB !important;
+    font-weight: bold !important;  
+  }
+  .slide {
+    /* layout */
+    display: flex;
+    flex-wrap: nowrap;
+    /* 컨테이너의 내용물이 컨테이너 크기(width, height)를 넘어설 때 보이지 않도록 하기 위해 hidden을 준다. */
+    overflow: hidden;
+
+    /* position */
+    /* slide_button의 position absolute가 컨테이너 안쪽에서 top, left, right offset이 적용될 수 있도록 relative를 준다. (기본값이 static인데, static인 경우 그 상위 컨테이너로 나가면서 현재 코드에선 html을 기준으로 offset을 적용시키기 때문) */
+    position: relative;
+
+    /* size */
+
+    width: 1000px;
+    height: auto;
+    overflow: hidden; /* 추가된 속성 */
+
+    /* slide drag를 위해 DOM요소가 드래그로 선택되는것을 방지 */
+    user-select: none;
+    }
+    .slide_item {
+    /* layout */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* position - 버튼 클릭시 left offset값을 적용시키기 위해 */
+    position: relative;
+    left: 0px;
+
+    /* size */
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    padding-top: 10px; /* 상단 여백 추가 */
+    padding-bottom: 10px; /* 하단 여백 추가 */
+    
+    /* flex item의 flex-shrink는 기본값이 1이므로 컨테이너 크기에 맞게 줄어드는데, 슬라이드를 구현할 것이므로 줄어들지 않도록 0을 준다. */
+    flex-shrink: 0;
+
+    /* transition */
+    transition: left 0.15s;
+    }
+    .img_item_test {
+      width: 150%;
+      height: auto; /* 높이를 자동으로 설정합니다. */
+      max-height: 230px; /* 최대 높이를 설정합니다. */
+      object-fit: contain; /* 이미지 비율을 유지하면서, 영역에 맞게 크기를 조절합니다. */
+  }
+    .slide_button {
+    /* layout */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* position */
+    position: absolute;
+    /* 버튼이 중앙에 위치하게 하기위해 계산 */
+    top: calc(50% - 16px);
+
+    /* size */
+    width: 32px;
+    height: 32px;
+
+    /* style */
+    border-radius: 100%;
+    background-color: #cccc;
+    cursor: pointer;
+    }
+
+    .slide_prev_button {
+    left: 10px;
+    }
+    .slide_next_button {
+    right: 10px;
+    }
+    /* 페이지네이션 스타일 */
+    ul,
+    li {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    }
+    .slide_pagination {
+    /* layout */
+    display: flex;
+    gap: 5px;
+
+    /* position */
+    position: absolute;
+    bottom: 0;
+    /* left:50%, translateX(-50%)를 하면 가로 가운데로 위치시킬 수 있다. */
+    left: 50%;
+    transform: translateX(-50%);
+    }
+    .slide_pagination > li {
+    /* 현재 슬라이드가 아닌 것은 투명도 부여 */
+    color: #7fb5ff88;
+    cursor: pointer;
+    font-size: 25px;
+    }
+    .slide_pagination > li.active {
+    /* 현재 슬라이드 색상은 투명도 없이 */
+    color: #7fb5ff;
+    }
+
+    .slide_item_duplicate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    left: 0px;
+    width: 100%;
+    height: 300px;
+    flex-shrink: 0;
+    transition: left 0.15s;
+    }
+    a{
+      color:black;
+    }
+         
+    .tab-content {
+      width:1500px;
+      height:500px;
+      float:left;
+      display: flex;
+      justify-content: center;  
+ 
+    }
+
+    .left-container {
+      float: left;
+      width: 560px;
+      height: 400px;
+      margin-left: 150px;
+      margin-top: 34px;
+    }
+    .right-container {
+      float: right;
+      width: 750px;
+      height: 400px;
+    
+    }
+    
+    .my-button[type="submit"]{
+      background-color:#655DBB;
+      border: none;
+      border-radius: 7px;
+      color: #fff;
+      cursor: pointer;
+      padding: 4px 4px;
+      font-size: 15px;
+      height: 23px;
+      margin-left: 15px;
+      margin-right: -5px;
+      margin-left: 39px;
+      margin: -7px;
+      margin-top: 1px;
+      margin-bottom: 7px;
+      margin-left: -8px;
+      transition: background-color 0.3s ease; 
+    }
+.my-button[type="submit"]:hover {
+    background-color: #BFACE2;
+}
+
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="black" style="text-align : center; margin-top: -10px;">
+    <a href="/" ><img src="../static/img/룸앤하이_가로.png" width="260" height="130" style="" alt="로고"></a>
+  <div style="margin:10px; ">
+
+    <ul class="nav nav-tabs " style="margin-bottom:3px;  border-radius: 40px;     margin-top: -47px;">  
+      <li class="active"><a href="#information" data-toggle="tab" style="border: 2px solid #655DBB; font-size=30px";><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+      </svg></a></li>
+      <li><a href="#positive" data-toggle="tab"style="border: 2px solid #A084DC; " >긍정리뷰</a></li>
+      <li><a href="#negative" data-toggle="tab"style="border: 2px solid  #BFACE2; ">부정리뷰</a></li>
+      <li><a href="#rnr" data-toggle="tab"style="border: 2px solid  #BFACE2; ">방과방가추천</a></li>
+    </ul>
+
+
+    <div class="tab-content">
+      <div class="tab-pane fade " id="rnr">
+        <p> "{{ hotel }}" 과/와 유사한 호텔 저희가 추천해드릴게요. <br>   </p>
+        <div class="left-container">
+            <table class="table">
+              <colgroup>
+                <col style="width: 10%">
+                <col style="width: 35%">
+                <col style="width: 35%">
+                <col style="width: 20%">
+               
+              </colgroup>
+                <thead>
+                    <tr>
+                        <th scope="col">No.</th>
+                        <th scope ="col">호텔</th>
+                        <th scope="col">주소</th>
+                        <th scope="col">더보기</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for idx,s,add,id_ in zip(idx_,sim[1:],sim_add[1:],sim_id[1:]) %}
+                    <tr>
+                        <td>{{idx}}</td>  
+                        <td>{{s}}</td>
+                        <td>{{add}}</td>
+                        <td>
+                            <form action='/hotel' method='get' target="_blank">
+                                <input type="hidden" name="ht_id" value="{{id_}}" style="text-align: center;">
+                                <input type="hidden" name="ht_name" value="{{s}}">
+                                <input type="hidden" name="ht_address" value="{{add}}">
+                                <button type="submit" class="my-button">더보기</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>  <div class="left-container">
+        <canvas id="radar-chart" width="400" height="400" margin-left: 157px;></canvas>
+        <script>
+          var raderData = {
+              labels: ['가성비', '친절', '청결', '관광', '주차', '조식', '방음', '접근성', '비품', '시설'],
+              datasets: [
+                  {
+                      label: '{{ rader_dt.datasets[0].label }}',
+                      data: {{ rader_dt.datasets[0].data | safe }},
+                      backgroundColor: '{{ rader_dt.datasets[0].backgroundColor }}',
+                      borderColor: '{{ rader_dt.datasets[0].borderColor }}'
+                  },
+                  {
+                      label: '{{ rader_dt.datasets[1].label }}',
+                      data: {{ rader_dt.datasets[1].data | safe }},
+                      backgroundColor: '{{ rader_dt.datasets[1].backgroundColor }}',
+                      borderColor: '{{ rader_dt.datasets[1].borderColor }}'
+                  },
+                  {
+                      label: '{{ rader_dt.datasets[2].label }}',
+                      data: {{ rader_dt.datasets[2].data | safe }},
+                      backgroundColor: '{{ rader_dt.datasets[2].backgroundColor }}',
+                      borderColor: '{{ rader_dt.datasets[2].borderColor }}'
+                  },
+                  {
+                      label: '{{ rader_dt.datasets[3].label }}',
+                      data: {{ rader_dt.datasets[3].data | safe }},
+                      backgroundColor: '{{ rader_dt.datasets[3].backgroundColor }}',
+                      borderColor: '{{ rader_dt.datasets[3].borderColor }}'
+                  },
+                  {
+                      label: '{{ rader_dt.datasets[4].label }}',
+                      data: {{ rader_dt.datasets[4].data | safe }},
+                      backgroundColor: '{{ rader_dt.datasets[4].backgroundColor }}',
+                      borderColor: '{{ rader_dt.datasets[4].borderColor }}'
+                  },
+                  {
+                      label: '{{ rader_dt.datasets[5].label }}',
+                      data: {{ rader_dt.datasets[5].data | safe }},
+                      backgroundColor: '{{ rader_dt.datasets[5].backgroundColor }}',
+                      borderColor: '{{ rader_dt.datasets[5].borderColor }}'
+                  }
+              ]
+          };
+  
+          var ctx = document.getElementById('radar-chart').getContext('2d');
+          var myChart = new Chart(ctx, {
+              type: 'radar',
+              data: raderData,
+          });
+      </script>
+      </div>
+
+    </div>
+
+      <div class="tab-pane fade in active" id="information">
+        <h1> {{ hotel }} </h1>
+        <p>{{ht_address}} </p> <!--갓선영 여기부터 여기까지라고 적어놓은곳 수정했어-->
+        <div class="slide slide_wrap">
+          <div class="slide_item item1"><img class=img_item_test src="../static/img/downloads/{{ht_id}}/{{hotel}}_1.jpg" alt="{{ht_id}}_{{hotel}}"/></div>
+          <div class="slide_item item2"><img class=img_item_test src="../static/img/downloads/{{ht_id}}/{{hotel}}_2.jpg" alt="여기는 사진이 없어요.."/></div>
+          <div class="slide_item item3"><img class=img_item_test src="../static/img/downloads/{{ht_id}}/{{hotel}}_3.jpg" alt="다나다나갓다나"/></div>
+          <div class="slide_item item4"><img class=img_item_test src="../static/img/downloads/{{ht_id}}/{{hotel}}_4.jpg" alt="우리조최고야~"/></div>
+          <div class="slide_item item5"><img class=img_item_test src="../static/img/downloads/{{ht_id}}/{{hotel}}_5.jpg" alt="이선영이지수미쳐~"/></div>
+          <div class="slide_item item6"><img class=img_item_test src="../static/img/downloads/{{ht_id}}/{{hotel}}_6.jpg" alt="이선영이지수미쳐~"/></div>
+          <div class="slide_item item7"><img class=img_item_test src="../static/img/downloads/{{ht_id}}/{{hotel}}_7.jpg" alt="이선영이지수미쳐~"/></div>
+          <div class="slide_item item8"><img class=img_item_test src="../static/img/downloads/{{ht_id}}/{{hotel}}_8.jpg" alt="이선영이지수미쳐~"/></div>
+          <div class="slide_item item9"><img class=img_item_test src="../static/img/downloads/{{ht_id}}/{{hotel}}_9.jpg" alt="이선영이지수미쳐~"/></div>
+
+          <div class="slide_prev_button slide_button">◀</div>
+          <div class="slide_next_button slide_button">▶</div>
+          <ul class="slide_pagination"></ul>
+        </div>
+    <script>
+      // 슬라이크 전체 크기(width 구하기)
+      const slide = document.querySelector(".slide");
+      let slideWidth = slide.clientWidth;
+
+      // 버튼 엘리먼트 선택하기
+      const prevBtn = document.querySelector(".slide_prev_button");
+      const nextBtn = document.querySelector(".slide_next_button");
+
+      // 슬라이드 전체를 선택해 값을 변경해주기 위해 슬라이드 전체 선택하기
+      let slideItems = document.querySelectorAll(".slide_item");
+      // 현재 슬라이드 위치가 슬라이드 개수를 넘기지 않게 하기 위한 변수
+      const maxSlide = slideItems.length;
+
+      // 버튼 클릭할 때 마다 현재 슬라이드가 어디인지 알려주기 위한 변수
+      let currSlide = 1;
+
+      // 페이지네이션 생성
+      const pagination = document.querySelector(".slide_pagination");
+
+      for (let i = 0; i < maxSlide; i++) {
+      if (i === 0) pagination.innerHTML += `<li class="active">•</li>`;
+      else pagination.innerHTML += `<li>•</li>`;
+      }
+
+      const paginationItems = document.querySelectorAll(".slide_pagination > li");
+
+      // 무한 슬라이드를 위해 start, end 슬라이드 복사하기
+      const startSlide = slideItems[0];
+      const endSlide = slideItems[slideItems.length - 1];
+      const startElem = document.createElement("div");
+      const endElem = document.createElement("div");
+
+      endSlide.classList.forEach((c) => endElem.classList.add(c));
+      endElem.innerHTML = endSlide.innerHTML;
+
+      startSlide.classList.forEach((c) => startElem.classList.add(c));
+      startElem.innerHTML = startSlide.innerHTML;
+
+      // 각 복제한 엘리먼트 추가하기
+      slideItems[0].before(endElem);
+      slideItems[slideItems.length - 1].after(startElem);
+
+      // 슬라이드 전체를 선택해 값을 변경해주기 위해 슬라이드 전체 선택하기
+      slideItems = document.querySelectorAll(".slide_item");
+      //
+      let offset = slideWidth + currSlide;
+      slideItems.forEach((i) => {
+      i.setAttribute("style", `left: ${-offset}px`);
+      });
+
+      function nextMove() {
+      currSlide++;
+      // 마지막 슬라이드 이상으로 넘어가지 않게 하기 위해서
+      if (currSlide <= maxSlide) {
+          // 슬라이드를 이동시키기 위한 offset 계산
+          const offset = slideWidth * currSlide;
+          // 각 슬라이드 아이템의 left에 offset 적용
+          slideItems.forEach((i) => {
+          i.setAttribute("style", `left: ${-offset}px`);
+          });
+          // 슬라이드 이동 시 현재 활성화된 pagination 변경
+          paginationItems.forEach((i) => i.classList.remove("active"));
+          paginationItems[currSlide - 1].classList.add("active");
+      } else {
+          // 무한 슬라이드 기능 - currSlide 값만 변경해줘도 되지만 시각적으로 자연스럽게 하기 위해 아래 코드 작성
+          currSlide = 0;
+          let offset = slideWidth * currSlide;
+          slideItems.forEach((i) => {
+          i.setAttribute("style", `transition: ${0}s; left: ${-offset}px`);
+          });
+          currSlide++;
+          offset = slideWidth * currSlide;
+          // 각 슬라이드 아이템의 left에 offset 적용
+          setTimeout(() => {
+          // 각 슬라이드 아이템의 left에 offset 적용
+          slideItems.forEach((i) => {
+              // i.setAttribute("style", `transition: ${0}s; left: ${-offset}px`);
+              i.setAttribute("style", `transition: ${0.15}s; left: ${-offset}px`);
+          });
+          }, 0);
+          // // 슬라이드 이동 시 현재 활성화된 pagination 변경
+          paginationItems.forEach((i) => i.classList.remove("active"));
+          paginationItems[currSlide - 1].classList.add("active");
+      }
+      }
+      function prevMove() {
+      currSlide--;
+      // 1번째 슬라이드 이하로 넘어가지 않게 하기 위해서
+      if (currSlide > 0) {
+          // 슬라이드를 이동시키기 위한 offset 계산
+          const offset = slideWidth * currSlide;
+          // 각 슬라이드 아이템의 left에 offset 적용
+          slideItems.forEach((i) => {
+          i.setAttribute("style", `left: ${-offset}px`);
+          });
+          // 슬라이드 이동 시 현재 활성화된 pagination 변경
+          paginationItems.forEach((i) => i.classList.remove("active"));
+          paginationItems[currSlide - 1].classList.add("active");
+      } else {
+          // 무한 슬라이드 기능 - currSlide 값만 변경해줘도 되지만 시각적으로 자연스럽게 하기 위해 아래 코드 작성
+          currSlide = maxSlide + 1;
+          let offset = slideWidth * currSlide;
+          // 각 슬라이드 아이템의 left에 offset 적용
+          slideItems.forEach((i) => {
+          i.setAttribute("style", `transition: ${0}s; left: ${-offset}px`);
+          });
+          currSlide--;
+          offset = slideWidth * currSlide;
+          setTimeout(() => {
+          // 각 슬라이드 아이템의 left에 offset 적용
+          slideItems.forEach((i) => {
+              // i.setAttribute("style", `transition: ${0}s; left: ${-offset}px`);
+              i.setAttribute("style", `transition: ${0.15}s; left: ${-offset}px`);
+          });
+          }, 0);
+          // 슬라이드 이동 시 현재 활성화된 pagination 변경
+          paginationItems.forEach((i) => i.classList.remove("active"));
+          paginationItems[currSlide - 1].classList.add("active");
+      }
+      }
+
+      // 버튼 엘리먼트에 클릭 이벤트 추가하기
+      nextBtn.addEventListener("click", () => {
+      // 이후 버튼 누를 경우 현재 슬라이드를 변경
+      nextMove();
+      });
+      // 버튼 엘리먼트에 클릭 이벤트 추가하기
+      prevBtn.addEventListener("click", () => {
+      // 이전 버튼 누를 경우 현재 슬라이드를 변경
+      prevMove();
+      });
+
+      // 브라우저 화면이 조정될 때 마다 slideWidth를 변경하기 위해
+      window.addEventListener("resize", () => {
+      slideWidth = slide.clientWidth;
+      });
+
+      // 각 페이지네이션 클릭 시 해당 슬라이드로 이동하기
+      for (let i = 0; i < maxSlide; i++) {
+      // 각 페이지네이션마다 클릭 이벤트 추가하기
+      paginationItems[i].addEventListener("click", () => {
+          // 클릭한 페이지네이션에 따라 현재 슬라이드 변경해주기(currSlide는 시작 위치가 1이기 때문에 + 1)
+          currSlide = i + 1;
+          // 슬라이드를 이동시키기 위한 offset 계산
+          const offset = slideWidth * currSlide;
+          // 각 슬라이드 아이템의 left에 offset 적용
+          slideItems.forEach((i) => {
+          i.setAttribute("style", `left: ${-offset}px`);
+          });
+          // 슬라이드 이동 시 현재 활성화된 pagination 변경
+          paginationItems.forEach((i) => i.classList.remove("active"));
+          paginationItems[currSlide - 1].classList.add("active");
+      });
+      }
+
+      // 드래그(스와이프) 이벤트를 위한 변수 초기화
+      let startPoint = 0;
+      let endPoint = 0;
+
+      // PC 클릭 이벤트 (드래그)
+      slide.addEventListener("mousedown", (e) => {
+      startPoint = e.pageX; // 마우스 드래그 시작 위치 저장
+      });
+
+      slide.addEventListener("mouseup", (e) => {
+      endPoint = e.pageX; // 마우스 드래그 끝 위치 저장
+      if (startPoint < endPoint) {
+          // 마우스가 오른쪽으로 드래그 된 경우
+          prevMove();
+      } else if (startPoint > endPoint) {
+          // 마우스가 왼쪽으로 드래그 된 경우
+          nextMove();
+      }
+      });
+
+      // 모바일 터치 이벤트 (스와이프)
+      slide.addEventListener("touchstart", (e) => {
+      startPoint = e.touches[0].pageX; // 터치가 시작되는 위치 저장
+      });
+      slide.addEventListener("touchend", (e) => {
+      endPoint = e.changedTouches[0].pageX; // 터치가 끝나는 위치 저장
+      if (startPoint < endPoint) {
+          // 오른쪽으로 스와이프 된 경우
+          prevMove();
+      } else if (startPoint > endPoint) {
+          // 왼쪽으로 스와이프 된 경우
+          nextMove();
+      }
+      });
+
+      // 기본적으로 슬라이드 루프 시작하기
+      let loopInterval = setInterval(() => {
+      nextMove();
+      }, 3000);
+
+      // 슬라이드에 마우스가 올라간 경우 루프 멈추기
+      slide.addEventListener("mouseover", () => {
+      clearInterval(loopInterval);
+      });
+
+      // 슬라이드에서 마우스가 나온 경우 루프 재시작하기
+      slide.addEventListener("mouseout", () => {
+      loopInterval = setInterval(() => {
+          nextMove();
+      }, 3000);
+      });
+    </script>
+
+        {% if search_key != None %}
+          <div style="text-align: center;">
+              <h3> 검색한 내용 :  {{search_key}}</h3>
+                <table class="table" style="text-align: center; ">
+                  <colgroup>
+                    <col style="width: 10%">
+                    <col style="width: 900px">
+                  </colgroup>
+                <thead>
+                    <tr>
+                        <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                        <th scope="col">Date</a></th>
+                        <th scope="col">Review</th>
+                        <!-- add more columns as needed -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                      <td>{{df_date}}</td>
+                      <td >{{df_review}}</td>
+                    </tr>
+                </tbody>
+                </table>
+              </div>
+        {% else %}        
+        {% endif %}
+      </div>
+   
+
+
+
+   
+
+        <div class="tab-pane fade" id="positive">
+          <ul class="nav sub-tabs">
+            <li class="active"><a href="#price-pos-review" data-toggle="tab"  data-placement="bottom" >가성비</a></li>
+            <li><a href="#kind-pos-review" data-toggle="tab"  >친절</a></li>
+            <li><a href="#clean-pos-review" data-toggle="tab"   >청결</a></li>
+            <li><a href="#around-pos-review" data-toggle="tab" >관광</a></li>
+            <li><a href="#parking-pos-review" data-toggle="tab" >주차</a></li>
+            <li><a href="#breakfast-pos-review" data-toggle="tab">조식</a></li>
+            <li><a href="#sound-pos-review" data-toggle="tab" >방음</a></li>
+            <li><a href="#location-pos-review" data-toggle="tab" >접근성</a></li>
+            <li><a href="#stuff-pos-review" data-toggle="tab">비품</a></li>
+            <li><a href="#facility-pos-review" data-toggle="tab" >시설</a></li>
+          </ul>
+          <script>
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+          </script>
+
+          <div class="tab-content">
+            <div class="tab-pane fade in active" id="price-pos-review"><br>
+        
+              <div class="res">
+                <div class='res-content'>
+                    <table class="table" style="text-align: center; ">
+                        <colgroup>
+                            <col style="width: 10%">
+                            <col style="width: 10%">
+                            <col style="width: 900px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                                <th scope="col">No</a></th>
+                                <th scope="col">Date</a></th>
+                                <th scope="col">Review</th>
+                                <!-- add more columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cnt_1 != 0 %}
+                            {% for i in range(cnt_1) %}
+                            <tr>
+                              <td>{{i+1}}</td>
+                              <td>{{rev_1[i]['_source']['date']}}</td>
+                              <td style="text-align: left;">{{rev_1[i]['_source']['review']}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <!-- <div class="pagination" id = "pagination1">
+                        <ul>
+                        </ul>
+                    </div> -->
+                  </div> <!--res-content div-->
+              </div>
+              <script src="../static/js/pagination_rev.js"></script>
+            </div>
+
+            <div class="tab-pane fade" id="kind-pos-review"><br>
+
+              <div class="res">
+                <div class='res-content'>
+                    <table class="table" style="text-align: center; ">
+                        <colgroup>
+                            <col style="width: 10%">
+                            <col style="width: 10%">
+                            <col style="width: 900px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                                <th scope="col">No</a></th>
+                                <th scope="col">Date</a></th>
+                                <th scope="col">Review</th>
+                                <!-- add more columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cnt_2 != 0 %}
+                            {% for i in range(cnt_2) %}
+                            <tr>
+                              <td>{{i+1}}</td>
+                              <td>{{rev_2[i]['_source']['date']}}</td>
+                              <td style="text-align: left;">{{rev_2[i]['_source']['review']}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                  </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="clean-pos-review"><br>
+              
+              <div class="res">
+                <div class='res-content'>
+                    <table class="table" style="text-align: center; ">
+                        <colgroup>
+                            <col style="width: 10%">
+                            <col style="width: 10%">
+                            <col style="width: 900px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                                <th scope="col">No</a></th>
+                                <th scope="col">Date</a></th>
+                                <th scope="col">Review</th>
+                                <!-- add more columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cnt_3 != 0 %}
+                            {% for i in range(cnt_3) %}
+                            <tr>
+                              <td>{{i+1}}</td>
+                              <td>{{rev_3[i]['_source']['date']}}</td>
+                              <td style="text-align: left;">{{rev_3[i]['_source']['review']}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                  </div>
+              </div>
+
+            </div>
+            <div class="tab-pane fade" id="around-pos-review"><br>
+             
+              <div class="res">
+                <div class='res-content'>
+                    <table class="table" style="text-align: center; ">
+                        <colgroup>
+                            <col style="width: 10%">
+                            <col style="width: 10%">
+                            <col style="width: 900px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                                <th scope="col">No</a></th>
+                                <th scope="col">Date</a></th>
+                                <th scope="col">Review</th>
+                                <!-- add more columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cnt_4 != 0 %}
+                            {% for i in range(cnt_4) %}
+                            <tr>
+                              <td>{{i+1}}</td>
+                              <td>{{rev_4[i]['_source']['date']}}</td>
+                              <td style="text-align: left;">{{rev_4[i]['_source']['review']}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <div class="pagination" id = "pagination3">
+                        <ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            </div>          
+
+
+            <div class="tab-pane fade" id="parking-pos-review"><br>
+              
+              <div class="res">
+                <div class='res-content'>
+                    <table class="table" style="text-align: center; ">
+                        <colgroup>
+                            <col style="width: 10%">
+                            <col style="width: 10%">
+                            <col style="width: 900px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                                <th scope="col">No</a></th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Review</th>
+                                <!-- add more columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cnt_5 != 0 %}
+                            {% for i in range(cnt_5) %}
+                            <tr>
+                              <td>{{i+1}}</td>
+                              <td>{{rev_5[i]['_source']['date']}}</td>
+                              <td style="text-align: left;">{{rev_5[i]['_source']['review']}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            </div>          
+            <div class="tab-pane fade" id="breakfast-pos-review"><br>
+              
+              <div class="res">
+                <div class='res-content'>
+                    <table class="table" style="text-align: center; ">
+                        <colgroup>
+                            <col style="width: 10%">
+                            <col style="width: 10%">
+                            <col style="width: 900px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                                <th scope="col">No</a></th>
+                                <th scope="col">Date</a></th>
+                                <th scope="col">Review</th>
+                                <!-- add more columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cnt_6 != 0 %}
+                            {% for i in range(cnt_6) %}
+                            <tr>
+                              <td>{{i+1}}</td>
+                              <td>{{rev_6[i]['_source']['date']}}</td>
+                              <td style="text-align: left;">{{rev_6[i]['_source']['review']}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3 style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                            </tr>
+                            {% endif %}
+                            
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+            <div class="tab-pane fade" id="sound-pos-review"><br>
+              
+              <div class="res">
+                <div class='res-content'>
+                    <table class="table" style="text-align: center; ">
+                        <colgroup>
+                            <col style="width: 10%">
+                            <col style="width: 10%">
+                            <col style="width: 900px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                                <th scope="col">No</a></th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Review</th>
+                                <!-- add more columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cnt_7 != 0 %}
+                            {% for i in range(cnt_7) %}
+                            <tr>
+                              <td>{{i+1}}</td>
+                              <td>{{rev_7[i]['_source']['date']}}</td>
+                              <td style="text-align: left;">{{rev_7[i]['_source']['review']}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+            <div class="tab-pane fade" id="location-pos-review"><br>
+              
+              <div class="res">
+                <div class='res-content'>
+                    <table class="table" style="text-align: center; ">
+                        <colgroup>
+                            <col style="width: 10%">
+                            <col style="width: 10%">
+                            <col style="width: 900px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                                <th scope="col">No</a></th>
+                                <th scope="col">Date</a></th>
+                                <th scope="col">Review</th>
+                                <!-- add more columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cnt_8 != 0 %}
+                            {% for i in range(cnt_8) %}
+                            <tr>
+                              <td>{{i+1}}</td>
+                              <td>{{rev_8[i]['_source']['date']}}</td>
+                              <td style="text-align: left;">{{rev_8[i]['_source']['review']}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+  
+
+            </div>
+            <div class="tab-pane fade" id="stuff-pos-review"><br>
+              
+              <div class="res">
+                <div class='res-content'>
+                    <table class="table" style="text-align: center; ">
+                        <colgroup>
+                            <col style="width: 10%">
+                            <col style="width: 10%">
+                            <col style="width: 900px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                                <th scope="col">No</a></th>
+                                <th scope="col">Date</a></th>
+                                <th scope="col">Review</th>
+                                <!-- add more columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cnt_9 != 0 %}
+                            {% for i in range(cnt_9) %}
+                            <tr>
+                              <td>{{i+1}}</td>
+                              <td>{{rev_9[i]['_source']['date']}}</td>
+                              <td style="text-align: left;">{{rev_9[i]['_source']['review']}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+  
+
+            </div>
+            <div class="tab-pane fade" id="facility-pos-review"><br>
+              
+              <div class="res">
+                <div class='res-content'>
+                    <table class="table" style="text-align: center; ">
+                        <colgroup>
+                            <col style="width: 10%">
+                            <col style="width: 10%">
+                            <col style="width: 900px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                                <th scope="col">No</a></th>
+                                <th scope="col">Date</a></th>
+                                <th scope="col">Review</th>
+                                <!-- add more columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cnt_10 != 0 %}
+                            {% for i in range(cnt_10) %}
+                            <tr>
+                              <td>{{i+1}}</td>
+                              <td>{{rev_10[i]['_source']['date']}}</td>
+                              <td style="text-align: left;">{{rev_10[i]['_source']['review']}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <ul>
+                        </ul>
+                    </div>
+                  </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      
+
+    <div class="tab-pane fade" id="negative">
+      <ul class="nav sub-tabs">
+        <li class="active"><a href="#price-neg-review" data-toggle="tab" to>가성비</a></li>
+        <li><a href="#kind-neg-review" data-toggle="tab" t >친절</a></li>
+        <li><a href="#clean-neg-review" data-toggle="tab" t>청결</a></li>
+        <li><a href="#around-neg-review" data-toggle="tab" t>관광</a></li>
+        <li><a href="#parking-neg-review" data-toggle="tab" t>주차</a></li>
+        <li><a href="#breakfast-neg-review" data-toggle="tab" t>조식</a></li>
+        <li><a href="#sound-neg-review" data-toggle="tab" t>방음</a></li>
+        <li><a href="#location-neg-review" data-toggle="tab" t>접근성</a></li>
+        <li><a href="#stuff-neg-review" data-toggle="tab" t>비품</a></li>
+        <li><a href="#facility-neg-review" data-toggle="tab"t >시설</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="price-neg-review"><br>
+       
+          <div class="res">
+            <div class='res-content'>
+                <table class="table" style="text-align: center; ">
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 900px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                            <th scope="col">No</a></th>
+                            <th scope="col">Date</a></th>
+                            <th scope="col">Review</th>
+                            <!-- add more columns as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if cnt_1_0 != 0 %}
+                        {% for i in range(cnt_1_0) %}
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{rev_1_0[i]['_source']['date']}}</td>
+                          <td style="text-align: left;">{{rev_1_0[i]['_source']['review']}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <div class="tab-pane fade" id="kind-neg-review"><br>
+          
+          <div class="res">
+            <div class='res-content'>
+                <table class="table" style="text-align: center; ">
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 900px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                            <th scope="col">No</a></th>
+                            <th scope="col">Date</a></th>
+                            <th scope="col">Review</th>
+                            <!-- add more columns as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if cnt_2_0 != 0 %}
+                        {% for i in range(cnt_2_0) %}
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{rev_2_0[i]['_source']['date']}}</td>
+                          <td style="text-align: left;">{{rev_2_0[i]['_source']['review']}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <div class="tab-pane fade" id="clean-neg-review"><br>
+          
+          <div class="res">
+            <div class='res-content'>
+                <table class="table" style="text-align: center; ">
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 900px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                            <th scope="col">No</a></th>
+                            <th scope="col">Date</a></th>
+                            <th scope="col">Review</th>
+                            <!-- add more columns as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if cnt_3_0 != 0 %}
+                        {% for i in range(cnt_3_0) %}
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{rev_3_0[i]['_source']['date']}}</td>
+                          <td style="text-align: left;">{{rev_3_0[i]['_source']['review']}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        </div>
+        <div class="tab-pane fade" id="around-neg-review"><br>
+    
+          <div class="res">
+            <div class='res-content'>
+                <table class="table" style="text-align: center; ">
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 900px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                            <th scope="col">No</a></th>
+                            <th scope="col">Date</a></th>
+                            <th scope="col">Review</th>
+                            <!-- add more columns as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if cnt_4_0 != 0 %}
+                        {% for i in range(cnt_4_0) %}
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{rev_4_0[i]['_source']['date']}}</td>
+                          <td style="text-align: left;">{{rev_4_0[i]['_source']['review']}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        </div>          
+        <div class="tab-pane fade" id="parking-neg-review"><br>
+          
+          <div class="res">
+            <div class='res-content'>
+                <table class="table" style="text-align: center; ">
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 900px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                            <th scope="col">No</a></th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Review</th>
+                            <!-- add more columns as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if cnt_5_0 != 0 %}
+                        {% for i in range(cnt_5_0) %}
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{rev_5_0[i]['_source']['date']}}</td>
+                          <td style="text-align: left;">{{rev_5_0[i]['_source']['review']}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        </div>          
+        <div class="tab-pane fade" id="breakfast-neg-review"><br>
+          
+          <div class="res">
+            <div class='res-content'>
+                <table class="table" style="text-align: center; ">
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 900px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                            <th scope="col">No</a></th>
+                            <th scope="col">Date</a></th>
+                            <th scope="col">Review</th>
+                            <!-- add more columns as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if cnt_6_0 != 0 %}
+                        {% for i in range(cnt_6_0) %}
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{rev_6_0[i]['_source']['date']}}</td>
+                          <td style="text-align: left;">{{rev_6_0[i]['_source']['review']}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3 style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        </div>
+        <div class="tab-pane fade" id="sound-neg-review"><br>
+          
+          <div class="res">
+            <div class='res-content'>
+                <table class="table" style="text-align: center; ">
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 900px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                            <th scope="col">No</a></th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Review</th>
+                            <!-- add more columns as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if cnt_7_0 != 0 %}
+                        {% for i in range(cnt_7_0) %}
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{rev_7_0[i]['_source']['date']}}</td>
+                          <td style="text-align: left;">{{rev_7_0[i]['_source']['review']}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <div class="tab-pane fade" id="location-neg-review"><br>
+          
+          <div class="res">
+            <div class='res-content'>
+                <table class="table" style="text-align: center; ">
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 900px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                            <th scope="col">No</a></th>
+                            <th scope="col">Date</a></th>
+                            <th scope="col">Review</th>
+                            <!-- add more columns as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if cnt_8_0 != 0 %}
+                        {% for i in range(cnt_8_0) %}
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{rev_8_0[i]['_source']['date']}}</td>
+                          <td style="text-align: left;">{{rev_8_0[i]['_source']['review']}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <div class="tab-pane fade" id="stuff-neg-review"><br>
+          
+          <div class="res">
+            <div class='res-content'>
+                <table class="table" style="text-align: center; ">
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 900px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                            <th scope="col">No</a></th>
+                            <th scope="col">Date</a></th>
+                            <th scope="col">Review</th>
+                            <!-- add more columns as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if cnt_9_0 != 0 %}
+                        {% for i in range(cnt_9_0) %}
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{rev_9_0[i]['_source']['date']}}</td>
+                          <td style="text-align: left;">{{rev_9_0[i]['_source']['review']}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <div class="tab-pane fade" id="facility-neg-review"><br>
+          
+          <div class="res">
+            <div class='res-content'>
+                <table class="table" style="text-align: center; ">
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 900px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <!--<th scope="col"><a href='/rader'>Hotel_Name</a></th>-->
+                            <th scope="col">No</a></th>
+                            <th scope="col">Date</a></th>
+                            <th scope="col">Review</th>
+                            <!-- add more columns as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if cnt_10_0 != 0 %}
+                        {% for i in range(cnt_10_0) %}
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{rev_10_0[i]['_source']['date']}}</td>
+                          <td style="text-align: left;">{{rev_10_0[i]['_source']['review']}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align: center;">해당 카테고리의 리뷰가 존재하지 않습니다.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                    <div class="pagination">
+                        <ul>
+                        </ul>
+                    </div>
+        
+          
+            <div class="tab-pane fade" id="recommend" >
+             
+          <div id="container">
+            <div id="left">
+              <h1>left</h1>
+              <div id="right">
+                <h1>right</h1>
+            
+
+
+            </div>
+          </div>
+        </div>
+           
+            
+            
+      </div>
+    </div>
+  </div>    
+</div>   
+</body>      
+</html>

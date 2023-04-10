@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room&Hi</title>
+    <link rel="icon" href="../static/img/popicon5.png"  sizes="256x256"  type="image/png">
+    <link href="../static/css/styles.css" rel="stylesheet" />
+    <!--구:드롭박스, 등급 : 체크박스-->
+    <style>
+        body {
+          background-image:url("../static/img/그림5.png");
+          background-size: cover;
+        }    
+        
+        .temp{
+          margin-right: 60px;
+          font-weight: bold;
+          margin-left: 60px;
+        }
+        .my-button[type="submit"]{
+          background-color:#655DBB;
+
+          border: none;
+          border-radius: 10px;
+          color: #fff;
+          cursor: pointer;
+          font-size: 15px;
+          font-weight: bold;
+          height: 38px;
+          margin-left: 15px;
+          margin-right: -5px;
+          width: 80px;
+          transition: background-color 0.3s ease;
+        
+
+        }
+        .my-button[type="reset"]{
+          background-color:#655DBB;
+
+          border: none;
+          border-radius: 10px;
+          color: #fff;
+          cursor: pointer;
+          font-size: 15px;
+          font-weight: bold;
+          height: 38px;
+          margin-left: 15px;
+          margin-right: -5px;
+          width: 80px;
+          transition: background-color 0.3s ease;
+        
+
+        }
+
+      .my-button[type="submit"]:hover {
+          background-color: #BFACE2;
+        }
+
+      .my-button[type="reset"]:hover {
+        background-color: #BFACE2;
+      }
+      input[type="checkbox"]:checked + label.selected {
+        background-color: blue;
+      }
+      </style>
+
+      <script>
+        function toggle(source) {
+          var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+          for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] != source) {
+              checkboxes[i].checked = source.checked;
+              checkboxes[i].parentNode.style.backgroundColor = "";
+            } else {
+              checkboxes[i].parentNode.style.backgroundColor = "yellow";
+            }
+          }
+        }
+      </script>
+</head>
+<body>
+
+    <div class="search-container">
+        <div class="search-wrapper2" style="
+        padding:0.5rem ;
+        line-height:1.3rem ;
+        border-radius:0.5rem;
+        top:16px;
+        ">
+          <div class="survey">
+            <div style="text-align: center;">
+              <a href="/">
+                  <img src="../static/img/룸앤하이_뭉친.png" style="width:100px; height:100px; margin-bottom: 9px; " /></a>
+                
+          </div>
+          
+              <!--form 태그로 정보 입력 받기 -->
+              <form method="POST" action="/show">
+                <!--지역 선택-->
+                <label class='temp' for="gu">지역 </label>
+                <select name="gu">
+                  {% for gu in gu_lst %}
+                      <option value="{{gu}}"> {{gu}} </option>
+                  {% endfor %}
+                </select>&nbsp;&nbsp;&nbsp;
+                <select name="gu2">
+                  {% for gu in gu_lst %}
+                      <option value="{{gu}}"> {{gu}} </option>
+                  {% endfor %}
+                </select> <small style="font-size: 10px; margin-left:10px">   ※ 서울시 자치구 2개까지 선택 가능 </small>
+                <br><br>
+                
+                
+                <!--등급선택-->
+                <label class='temp' for="level">등급 </label>
+                <label style="font-size:14px"><input type="checkbox" value="all" name="level" onclick="toggle(this)"checked>전체</label>
+                {% for level in level_lst %}
+                    <label style="font-size:14px"><input type="checkbox" value="{{level}}" name="level_checkbox" onclick="updateAllCheckbox()">{{level}}</label>
+                {% endfor %}
+                <script src="../static/js/checkbox.js"></script>          
+                <hr>
+                <!--카테고리 가중치 선택-->
+                {% for cat in cat_lst %}
+                <div class="question">
+                <p>{{cat}}</p>
+                
+                    <input class='input-radio' type="radio" id="{{cat}}-none" name="{{cat}}" value="0" >
+                    <label for="{{cat}}-none" style="background-color:#fff;border-radius: 10px;" > 
+                     상관없음</label>
+                    
+
+                    <input class='input-radio' type="radio" id="{{cat}}-nn" name="{{cat}}" value="0.5">
+                    <label for="{{cat}}-nn" style="background-color:#fff; border-radius: 10px;">덜 중요</label>
+                
+                    <input class='input-radio' type="radio" id="{{cat}}-normal" name="{{cat}}" value="1" checked>
+                    <label for="{{cat}}-normal" style="background-color:#fff;  border-radius: 10px;">보통</label>
+
+                    <input class='input-radio' type="radio" id="{{cat}}-imp" name="{{cat}}" value="1.5" >
+                    <label for="{{cat}}-imp" style="background-color:#fff;  border-radius: 10px;">중요</label>
+
+                    <input class='input-radio' type="radio" id="{{cat}}-important" name="{{cat}}" value="2">
+                    <label for="{{cat}}-important" style="background-color:#fff;  border-radius: 10px;">매우중요</label>
+                
+                </div>
+                {% endfor %}   
+                <br>
+                <div align="center" style="padding-top:15px; text-align: center;">
+                  <input type='reset' class="my-button" >
+                  <button type="submit" class="my-button">제출</button> &nbsp;&nbsp;
+                </div>
+                
+                
+            </form>
+          </div>
+        </div>
+      </div>
+      
+</body>
+</html>

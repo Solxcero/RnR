@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room&Hi</title>
+    <link rel="icon" href="../static/img/popicon5.png"  sizes="256x256"  type="image/png">
+    <link href="../static/css/styles.css" rel="stylesheet" />
+    <script src="../static/js/panelcontent.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:13px;}
+        .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
+        .map_wrap {position:relative;width:100%;height:500px;}
+        #menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
+        .bg_white {background:#fff;}
+        #menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
+        #menu_wrap .option{text-align: center;}
+        #menu_wrap .option p {margin:10px 0;}  
+        #menu_wrap .option button {margin-left:10px;}
+        #placesList {padding-left:1px;}
+        #placesList li {list-style: none;}
+        #placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
+        #placesList .item span {display: block;margin-top:4px;}
+        #placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+        #placesList .item h5{font-size:1em; margin:1px 0px;}
+        #placesList .item .info{padding:10px 0 10px 55px;}
+        #placesList .info .gray {color:#8a8a8a;}
+        #placesList .info .jibun {padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
+        #placesList .info .tel {color:#009900;}
+        #placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
+        #placesList .item .marker_1 {background-position: 0 -10px;}
+        #placesList .item .marker_2 {background-position: 0 -56px;}
+        #placesList .item .marker_3 {background-position: 0 -102px}
+        #placesList .item .marker_4 {background-position: 0 -148px;}
+        #placesList .item .marker_5 {background-position: 0 -194px;}
+        #pagination {margin:10px auto;text-align: center;}
+        #pagination a {display:inline-block;margin-right:10px;}
+        #pagination .on {font-weight: bold; cursor: default;color:#777;}
+
+        
+        .my-button[type="submit"]{
+            background-color:#655DBB;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            padding: 4px 10px;
+            font-size: 15px;
+            height: 38px;
+            margin-left: 15px;
+            margin-right: -5px;
+            margin-left: 39px;
+            margin: -5px;
+            margin-top: 4px;
+            margin-bottom: 4px;
+            margin-left: -7px;
+            transition: background-color 0.3s ease; 
+          }
+   .my-button[type="submit"]:hover {
+          background-color: #BFACE2;
+      }
+
+      .search-container2 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+
+          .info_body{
+            background-color:pink;
+            width: 390px;
+            height: 679px;
+          }
+
+          .close-btn[type="submit"]{
+            background-color:#EBC7E6;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            padding: 4px 10px;
+            font-size: 15px;
+            height: 38px;
+            margin-left: 15px;
+            margin-right: -5px;
+            margin-left: 39px;
+            margin: -5px;
+            top:10px
+         
+          }
+        .close-btn[type="submit"]:hover {
+          background-color: #BFACE2;
+        }
+          
+      
+    </style>
+    
+        
+</head>
+<body>
+    <div class="overlay" id="overlay">
+        <div class="text-container">
+            <p class="microphone-in-use">마이크 사용중...</p>
+            <button type="button" id="cancelButton">취소</button>
+        </div>
+    </div>
+    <div class="search-container">
+        <div class="search-wrapper3">
+            <div class="search-image3">
+                <a href="/"><img src="../static/img/룸앤하이_가로.png" style="width=50px; height=50px;     margin-left: -57px; margin-top: 19px;
+                    height: 108px;"></a>
+            </div>
+    
+            <form class="search-box3" action="/result">
+                <input type="text" id="search" autocomplete="off" name="search" required value = "{{"".join(gu_send)}}" required placeholder="예) 저렴하게 호캉스하기 좋은 깔끔한 호텔 알려줘">
+                <!-- <button type="submit">검색</button> -->
+                <button type="button" id="micButton" style="background: none; border: none; padding: 0;">
+                    <img src="../static/img/mic2.png" alt="마이크" style="width: 25px; height: 25px;">
+                </button> 
+            </form> 
+            {% if res.shape[0]!=0 %}
+            <div class="map"style="width:121%; height:90%" >
+                <div id="map"  style="width:65%; height:91%;"></div>
+
+                <div id="menu_wrap" class="bg_white" >
+                   
+                    <hr>
+                    <ul id="placesList"></ul>
+                    <div id="pagination"></div>
+                </div>
+
+
+                <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c1a48e23f012e31e332fab7ac2806802&libraries=services,clusterer,drawing"></script>
+                <script>
+                    // 마커를 담을 배열입니다
+                    var markers = [];
+                    
+                    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                        mapOption = {
+                            center: new kakao.maps.LatLng({{gu_lat}}, {{gu_long}}), // 지도의 중심좌표
+                            level: 3 // 지도의 확대 레벨
+                        };  
+
+                    function divide_data_into_pages(data, itemsPerPage) {
+                        var pages = [];
+                        for (var i = 0; i < data.length; i += itemsPerPage) {
+                            pages.push(data.slice(i, i + itemsPerPage));
+                        }
+                        return pages;
+                    }
+    
+                    // 현재 페이지 번호를 저장할 변수입니다
+                    var currentPage = 1;   
+                    
+                    // 페이지별 데이터를 표시하는 함수입니다
+                    function displayPageData() {
+                        var hotels = dividedData[currentPage - 1]; // 페이지 번호에 해당하는 데이터를 가져옵니다
+                        displayPlaces(hotels); // 해당 데이터를 사용하여 페이지를 표시합니다
+                    }
+                    // 지도를 생성합니다    
+                    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+                    // 데이터베이스에서 가져온 값을 사용하여 지도에 마커를 추가하는 코드
+                    {% for hotel in map_db %}
+                        var marker = new kakao.maps.Marker({
+                            position: new kakao.maps.LatLng({{ hotel.latitude }}, {{ hotel.longitude }}),
+                            title: '{{ hotel.ht_name }}'
+                        });
+                        var infowindow = new kakao.maps.InfoWindow({
+                            content: '<div style="padding:5px;">' + '{{ hotel.ht_name }}' + '</div>',
+                            // removable: false  // true 로하면 x 표시 생김
+                        });
+                        kakao.maps.event.addListener(marker, 'click', function() {
+                            if (infowindow.getMap()) {
+                                infowindow.close();
+                            } else {
+                                infowindow.open(map, marker);
+                            }
+                        });
+                        markers.push(marker);
+                        marker.setMap(map);  // 이 부분을 추가하여 지도에 마커를 표시합니다.
+                    {% endfor %}
+                    
+                    // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+                    function placesSearchCB(data, status, pagination) {
+                        if (status === kakao.maps.services.Status.OK) {
+                    
+                            // 정상적으로 검색이 완료됐으면
+                            // 검색 목록과 마커를 표출합니다
+                            displayPlaces(data);
+                    
+                            // 페이지 번호를 표출합니다
+                            displayPagination(pagination);
+                    
+                        } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+                    
+                            alert('검색 결과가 존재하지 않습니다.');
+                            return;
+                    
+                        } else if (status === kakao.maps.services.Status.ERROR) {
+                    
+                            alert('검색 결과 중 오류가 발생했습니다.');
+                            return;
+                    
+                        }
+                    }
+
+
+                    // 검색 결과 목록과 마커를 표출하는 함수입니다
+                    function displayPlaces(hotels) {
+                        var listEl = document.getElementById('placesList'),
+                            fragment = document.createDocumentFragment(),
+                            bounds = new kakao.maps.LatLngBounds();
+
+                        // 검색 결과 목록에 추가된 항목들을 제거합니다
+                        removeAllChildNods(listEl);
+
+                        // 지도에 표시되고 있는 마커를 제거합니다
+                        removeMarker();
+
+                        for (var i = 0; i < hotels.length; i++) {
+                            var hotelPosition = new kakao.maps.LatLng(hotels[i].latitude, hotels[i].longitude),
+                                marker = addMarker(hotelPosition, i),
+                                itemEl = getListItem(i, hotels[i]);
+
+                            bounds.extend(hotelPosition);
+
+                            (function (marker, title, address) {
+                                kakao.maps.event.addListener(marker, 'mouseover', function () {
+                                    displayInfowindow(marker, title);
+                                });
+
+                                kakao.maps.event.addListener(marker, 'mouseout', function () {
+                                    infowindow.close();
+                                });
+
+                                itemEl.onmouseover = function () {
+                                    displayInfowindow(marker, title);
+                                };
+
+                                itemEl.onmouseout = function () {
+                                    infowindow.close();
+                                };
+                            })(marker, hotels[i].ht_name, hotels[i].address);
+
+                            fragment.appendChild(itemEl);
+                        }
+
+                        listEl.appendChild(fragment);
+                        map.setBounds(bounds);
+                    }
+
+                    // 검색결과 항목을 Element로 반환하는 함수입니다
+                    function getListItem(index, hotel) {
+                        var el = document.createElement('li'),
+                            itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
+                            '<div class="info">' +
+                            '   <h5>' + hotel.ht_name + '</h5>';
+
+                        if (hotel.address) {
+                            itemStr += '   <span>' + hotel.address + '</span>';
+                        } else {
+                            itemStr += '   <span>주소 정보 없음</span>';
+                        }
+
+                        itemStr += '</div>';
+
+                        el.innerHTML = itemStr;
+                        el.className = 'item';
+
+                        return el;
+                    }
+
+                    // displayPlaces 함수를 호출하면서 데이터베이스에서 받아온 호텔 리스트를 전달합니다.
+                    {% with hotels = map_db|tojson %}
+                        displayPlaces({{ hotels }});
+                    {% endwith %}
+                    
+                    // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+                    function addMarker(position, idx, title) {
+                        var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+                            imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+                            imgOptions =  {
+                                spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+                                spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+                                offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+                            },
+                            markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+                                marker = new kakao.maps.Marker({
+                                position: position, // 마커의 위치
+                                image: markerImage 
+                            });
+                    
+                        marker.setMap(map); // 지도 위에 마커를 표출합니다
+                        markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+                    
+                        return marker;
+                    }
+                    
+                    // 지도 위에 표시되고 있는 마커를 모두 제거합니다
+                    function removeMarker() {
+                        for ( var i = 0; i < markers.length; i++ ) {
+                            markers[i].setMap(null);
+                        }   
+                        markers = [];
+                    }
+                    
+                    function syncPagination(page) {
+                        currentPage = page; // 현재 페이지 번호 업데이트
+                        displayPageData(); // 페이지 번호에 따라 페이지의 데이터를 표시
+                        // 테이블 페이지네이션에서 선택된 링크 업데이트
+                        const activeLink = document.querySelector('.res .pagination .active');
+                        if (activeLink) {
+                            activeLink.classList.remove('active');
+                        }
+                        document.querySelector('.res .pagination li:nth-child(' + page + ')').classList.add('active');
+                    }
+                    
+                    // 페이지 번호를 표시하는 함수 수정
+                    function displayPagination(pagination) {
+                        var paginationEl = document.getElementById('pagination'),
+                            fragment = document.createDocumentFragment(),
+                            i;
+                    
+                        // 기존에 추가된 페이지번호를 삭제합니다
+                        while (paginationEl.hasChildNodes()) {
+                            paginationEl.removeChild(paginationEl.lastChild);
+                        }
+                    
+                        for (i = 1; i <= pagination.last; i++) {
+                            var el = document.createElement('a');
+                            el.href = "#";
+                            el.innerHTML = i;
+                    
+                            if (i === pagination.current) {
+                                el.className = 'on';
+                            } else {
+                                el.onclick = (function (i) {
+                                    return function () {
+                                        syncPagination(i);
+                                        return false;
+                                    }
+                                })(i);
+                            }
+                    
+                            fragment.appendChild(el);
+                        }
+                        paginationEl.appendChild(fragment);
+                    }
+                    {% with hotels = map_db|tojson %}
+                        var hotelData = {{ hotels }};
+                    {% endwith %}
+
+                    // 페이지별로 데이터를 나눕니다 (페이지당 15개의 호텔)
+                    var dividedData = divide_data_into_pages(hotelData, 5);
+
+                    // 첫 번째 페이지의 데이터를 표시합니다
+                    displayPageData();
+
+                    // 페이지네이션을 설정합니다
+                    var pagination = {
+                        current: 1,
+                        last: dividedData.length,
+                        gotoPage: function (page) {
+                            this.current = page;
+                            displayPagination(this);
+                        }
+                    };
+
+                    // 페이지 번호를 표시합니다
+                    //displayPagination(pagination); 
+                    
+                    // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+                    // 인포윈도우에 장소명을 표시합니다
+                    function displayInfowindow(marker, title) {
+                        var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+                    
+                        infowindow.setContent(content);
+                        infowindow.open(map, marker);
+                    }
+                    
+                     // 검색결과 목록의 자식 Element를 제거하는 함수입니다
+                    function removeAllChildNods(el) {   
+                        while (el.hasChildNodes()) {
+                            el.removeChild (el.lastChild);
+                        }
+                    }
+                    </script>
+           
+            </div>
+            {% endif %}
+
+            <div class="res">
+                <div class='res-content'>
+                    <p style="text-align: center;">🔎 {{search}}</p>
+                    <table class="table"> 
+                        <colgroup>
+                            <col style="width: 10%">
+                            <col style="width: 35%">
+                            <col style="width: 10%">
+                            <col style="width: 25%">
+                            <col style="width: 20%">
+                          </colgroup>
+                        <thead>
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">호텔</th>
+                                <th scope="col">등급</th>
+                                <th scope="col">보러가기</th>
+                                <th scope="col">더보기</th>
+                                <!-- add more columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if res.shape[0]!=0 %}
+                                {% for idx,i in zip(idx_,res.index.tolist()) %}
+                                <tr>  
+                                    <td>{{idx}}</td>                              
+                                    <td >
+                                        <a id ="test" href="#" onclick="openPanelver2(
+                                            '{{res.loc[i,'ht_name']}}',
+                                            eval('{{ score_df.loc[i][cat_lst].values.tolist()|tojson|safe}}'),
+                                            eval('{{pick_avg|tojson|safe}}'),
+                                            eval('{{seoul_avg|tojson|safe}}'));" tooltip="클릭해서 점수를 확인하세요!" flow="down">
+                                            {{res.loc[i,'ht_name']}}
+                                          
+                                        </a>    
+                                        <span tooltip="Get Down." flow="down"></span>                                
+                                    </td>
+                                    
+                                    <td>{{res.loc[i,'등급']}}</td>
+                                    {% set booking_url = '<a href="'~ res['bk_url'][i] ~ '"></a>' %}
+                                    {% set yanolja_url = '<a href="' ~ res['ya_url'][i] ~ '"></a>' %}
+                                    {% set goodchoice_url = '<a href="' ~ res['good_url'][i] ~ '"></a>' %}
+                                    <td>
+                                        {% if booking_url != '<a href="-"></a>' %}<a href="{{res['bk_url'][i]}}" target="_blank"><img src="../static/img/부킹.png" width="20" height="20"></a>
+                                        {% else %} <a></a> {% endif %}
+                                        {% if yanolja_url != '<a href="-"></a>' %}<a href="{{res['ya_url'][i]}}" target="_blank"><img src="../static/img/야놀.png" width="20" height="20"></a>
+                                        {% else %} <a></a> {% endif %}
+                                        {% if goodchoice_url != '<a href="-"></a>' %}<a href="{{res['good_url'][i]}}" target="_blank"><img src="../static/img/여기.png" width="20" height="20"></a>
+                                        {% else %} <a></a> {% endif %}
+                                    </td>
+                                    <td>
+                                        <form action='/hotel' method='get' target="_blank">
+                                            <input type="hidden" name="ht_id" value="{{i}}">
+                                            <input type="hidden" name="ht_name" value="{{res['ht_name'][i]}}">
+                                            <input type="hidden" name="ht_address" value="{{res['address'][i]}}">
+                                            <input type="hidden" name="search_key" value="{{search}}">
+                                            <input type="hidden" name="score" value="{{next_df.loc[i,'score']}}">
+                                            <input type="hidden" name="cat_id" value="{{next_df.loc[i,'cat_id']}}">
+                                            <input type="hidden" name="df_date" value="{{next_df.loc[i,'date']}}">
+                                            <input type="hidden" name="df_review" value="{{next_df.loc[i,'review']}}">
+                                            <button type="submit" class="my-button" >더 보기</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="5"style="text-align: center;">검색 결과가 없습니다. 다시 검색해보시겠어요?</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+
+                    <div class="pagination">
+                        <ul>
+                        </ul>
+                    </div>      
+                </div>
+          
+      
+            <script>
+                window.onload = function() {
+                    const table = document.querySelector('.res table');
+                    const pagination = document.querySelector('.res .pagination');
+                    const rowsPerPage = 5; // 페이지당 보여줄 행 수
+                    let currentPage = 1;
+            
+                    function showRows() {        
+                        // tbody 요소 가져오기
+                        const tbody = table.querySelector('tbody');
+            
+                        // 테이블의 모든 행들을 가져와서 currentPage에 해당하는 행들만 보여줍니다.
+                        const rows = tbody.querySelectorAll('tr');
+                        const start = (currentPage - 1) * rowsPerPage;
+                        const end = start + rowsPerPage;
+            
+                        rows.forEach((row, index) => {
+                            if (index < start || index >= end) {
+                                row.style.display = 'none';
+                            } else {
+                                row.style.display = '';
+                            }
+                        });
+                    }
+            
+                    function createPagination() {
+                        // 기존 페이지 링크들을 삭제합니다.
+                        pagination.querySelector('ul').innerHTML = '';
+                        // 테이블의 총 행 수를 계산하여 페이지네이션을 생성합니다.
+                        const tbody = table.querySelector('tbody');
+                        const rows = tbody.querySelectorAll('tr');
+                        const totalPages = Math.ceil(rows.length / rowsPerPage);
+            
+                        for (let i = 1; i <= totalPages; i++) {
+                            const li = document.createElement('li');
+                            const a = document.createElement('a');
+                            a.href = '#';
+                            a.textContent = i;
+                            li.appendChild(a);
+                            pagination.querySelector('ul').appendChild(li);
+            
+                            a.addEventListener('click', (event) => {
+                            event.preventDefault();
+                            currentPage = i; // 현재 페이지를 i로 설정합니다.
+                            showRows(); // 페이지 번호가 바뀔 때마다 showRows 함수를 호출하여 데이터를 업데이트합니다.
+                            syncPagination(i);
+
+                            const activeLink = pagination.querySelector('.active');
+                            if (activeLink) {
+                                activeLink.classList.remove('active');
+                            }
+                            li.classList.add('active');
+                        });
+
+                        }
+                    }
+            
+                    showRows();
+                    createPagination();
+                };
+            </script>
+        </div>   
+            <form  class="search-button3" action="/pick"  style="position:fixed; bottom:20px;">
+                <button>다시하기</button>
+            </form>   
+            
+            
+            <div id="test" class="panel">
+                <div class="panel-header">
+                    <button class="close-btn" type="submit" onclick="closePanel()" style="margin-left: 340px; margin-top: -14px; background-color: #EBC7E6; color: black;" >Close</button>
+                </div>
+                
+                <div class="panel-content" style="margin-top:-48px     background-color: #EADFFF; "></div>
+        
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/stt.js"></script>
+</body>
+</html>

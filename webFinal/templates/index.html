@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room&Hi</title>
+    <link rel="icon" href="../static/img/popicon5.png"  sizes="256x256"  type="image/png">
+    <link href="../static/css/styles.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background-size: cover;
+        background-image:url("../static/img/그림4.png");
+        }
+        div1{
+            position:absolute;
+            
+            width:100px;
+            height:50px;
+            left:-80px;
+        
+            /* 애니메이션 이름 */
+            animation-name: jaehee;
+            animation-duration:2s;
+            animation-duration: leaner;
+            animation-iteration-count:1;
+            animation-direction:alternate;
+            animation-fill-mode: forwards;
+          }
+          
+          /* 키프레임 이름 = 애니메이션 이름 */
+          @-webkit-keyframes jaehee {
+            0% {
+              bottom:-250px;
+            }
+            100% {
+              bottom:0px;
+            }
+          }
+   
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay">
+        <div class="text-container">
+            <p class="microphone-in-use">마이크 사용중...</p>
+            <button type="button" id="cancelButton">취소</button>
+        </div>
+    </div>
+    <div class="search-container">
+        <div class="search-wrapper">
+            <form class="search-box" action="/result" method="GET" onsubmit="showLoader()">
+                <div class="search-image" >
+                    <img src="../static/img/룸앤하이_가로.png" style="width:320px">
+                </div>
+                <form class="search-box3" action="/result" onsubmit="showLoader()"> 
+               
+                    <input type="text" autocomplete="off" id="search" name="search" required value="{{''.join(gu_send)}}" required placeholder="예) 강남역에서 가깝고 깔끔한 호텔 알려줘">
+                    <!-- <button type="submit">검색</button> -->
+                    <button type="submit">검색</button>
+                    <button type="button" id="micButton" style="background: none;  border: none;  padding: 0;">
+                        <img src="../static/img/mic2.png" alt="마이크" style="width: 25px; height: 25px;">
+                    </button> 
+                </form>
+                <form  class="search-button" action="/pick">
+                    <div1 class="button-wrapper">
+                    <button class="speech-bubble" style="font-size:15px"><img src="../static/img/point4.png" width="20" height="20"> 클릭으로 추천받기   </button> <br>
+                    <div id="loader" class="d-none" style="text-align: center; padding-left: 10px;"> 
+                        <img style="width: 50px; height: 50px; margin-top:36px; margin-bottom:25px; margin-left:148px; " src="../static/img/load.gif" />
+                      </div>
+                    </div1>
+                </form>
+            </form>
+        </div>
+        <script>
+            function showLoader() {
+              document.getElementById("loader").classList.remove("d-none");
+            }
+        </script>
+        <script src="/static/js/stt.js"></script>
+</body>
+</html>
