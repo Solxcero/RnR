@@ -2,7 +2,6 @@
 ![ppt_2](https://github.com/user-attachments/assets/1863247c-72d0-47c0-8041-f79c6419099d)
 ![ppt_3](https://github.com/user-attachments/assets/63947187-37e6-4be9-8849-e65275a1987e)
 ![ppt_4](https://github.com/user-attachments/assets/37378c84-b56b-4eb2-95ec-55a8c16099a1)
-![ppt_5](https://github.com/user-attachments/assets/4cad359f-e831-44a7-b0d0-7b28f75afb7e)
 ![ppt_6](https://github.com/user-attachments/assets/1c6c399a-bacd-47c6-a350-736601dd1d1a)
 ![ppt_7](https://github.com/user-attachments/assets/7cfe467c-a900-4487-bc22-e204033c0411)
 ![ppt_8](https://github.com/user-attachments/assets/23a7da60-85c4-4af9-8802-d8756ecd4519)
